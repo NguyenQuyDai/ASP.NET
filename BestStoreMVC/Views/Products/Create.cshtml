@@ -1,0 +1,77 @@
+﻿@model ProductDto
+@{
+}
+
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-5">New Product</h2>
+
+
+        @using(Html.BeginForm("Create","Products",FormMethod.Post,new {enctype="multipart/form-data"}))
+        {
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Name, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Brand, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.Brand, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Brand, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Category, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.Category, new SelectList(new[]
+                             {
+                new { Value = "Other", Text = "Other" },
+                new { Value = "Phones", Text = "Phones" },
+                new { Value = "Computers", Text = "Computers" },
+                new { Value = "Accessories", Text = "Accessories" },
+                new { Value = "Printers", Text = "Printers" },
+                new { Value = "Cameras", Text = "Cameras" }
+                }, "Value", "Text"), new { @class = "form-select" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Price, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.Description, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                @Html.LabelFor(model => model.ImageFileName, new { @class = "col-sm-4 col-form-label" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(model => model.ImageFileName, new { @class = "form-control", type = "file" })
+                    @Html.ValidationMessageFor(model => model.ImageFileName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-sm-4 col-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-sm-4 d-grid">
+                    <a class="btn btn-outline-primary" asp-controller="Products" asp-action="Index" role="button">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
