@@ -1,0 +1,62 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<style>
+    .input-error {
+        border: 1px solid red;
+    }
+</style>
+
+<h1>SignalR Chat</h1>
+<div>
+    <input type="text" id="userInput" placeholder="Name" />
+    <input type="text" id="messageInput" placeholder="Message" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+<ul id="messagesList"></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.9/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chathub")
+        .build();
+
+    connection.on("ReceiveMessage", (user, message) => {
+        const li = document.createElement("li");
+        li.textContent = `${user}: ${message}`;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    connection.start().catch(err => console.error(err.toString()));
+
+    function sendMessage() {
+        const userInput = document.getElementById("userInput");
+        const messageInput = document.getElementById("messageInput");
+        const user = userInput.value.trim();
+        const message = messageInput.value.trim();
+
+        if (!user || !message) {
+            if (!user) {
+                userInput.classList.add("input-error");
+            } else {
+                userInput.classList.remove("input-error");
+            }
+
+            if (!message) {
+                messageInput.classList.add("input-error");
+            } else {
+                messageInput.classList.remove("input-error");
+            }
+
+            alert("Vui lòng nhập đủ các trường dữ liệu!");
+            return;
+        }
+
+        userInput.classList.remove("input-error");
+        messageInput.classList.remove("input-error");
+
+        connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
+    }
+</script>
